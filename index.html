@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Verifikasi Gula Aren Web3 & AI (Solana Devnet)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            800: '#92400e',
+                            900: '#78350f',
+                            950: '#451a03',
+                        },
+                        solana: '#9945FF',
+                        solanaGreen: '#14F195'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- QRCode JS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .solana-gradient {
+            background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+        }
+        .solana-border {
+            border-image: linear-gradient(to right, #9945FF, #14F195) 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-gradient-to-tr from-amber-600 to-amber-800 rounded-xl shadow-lg shadow-amber-900/30">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-amber-200"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-extrabold text-base tracking-tight text-white">ArenVerify Web3</h1>
+                        <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-800/50">Solana Devnet</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Verifikasi Produk Lokal berbasis AI & Blockchain (Modul 1)</p>
+                </div>
+            </div>
+
+            <!-- Web3 Wallet Status -->
+            <div class="flex items-center space-x-3">
+                <button id="walletBtn" onclick="toggleWalletConnect()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono font-medium px-4 py-2 rounded-xl border border-slate-700 transition flex items-center gap-2">
+                    <span id="walletDot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                    <span id="walletText">Connect Wallet (Phantom)</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-8">
+
+        <!-- Banner Proyek UTS Modul 1 -->
+        <section class="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 p-6 md:p-8 shadow-2xl">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="space-y-2 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <i data-lucide="award" class="w-3.5 h-3.5"></i> Proyek Praktikum Keamanan Data & Blockchain
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        Verifikasi Mutu Gula Aren Tradisional Batok Kelapa
+                    </h2>
+                    <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                        Mengintegrasikan <strong>5 Indikator Pengetahuan Lokal Penderes</strong> dengan <strong>Computer Vision AI</strong> & immutability ledger <strong>Solana Devnet Smart Program</strong>.
+                    </p>
+                </div>
+
+                <!-- Stats Quick View -->
+                <div class="grid grid-cols-2 gap-3 w-full md:w-auto font-mono text-xs">
+                    <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-500 block text-[10px]">VERIFIED BATCHES</span>
+                        <span class="text-base font-bold text-emerald-400">1,284 Batch</span>
+                    </div>
+                    <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800/80">
+                        <span class="text-slate-500 block text-[10px]">VALIDATOR PENDERES</span>
+                        <span class="text-base font-bold text-purple-400">48 Kelompok Tani</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Workspace Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Left Panel: Form Input & Vision AI Scan (5 Cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="scan-line" class="text-amber-500 w-4 h-4"></i> Form Audit Batch Produk
+                        </h3>
+                        <span class="text-[10px] font-mono text-slate-400">Role: Validator / Penderes</span>
+                    </div>
+
+                    <form id="verifyForm" onsubmit="runVerification(event)" class="space-y-4">
+                        <!-- Select Batch ID -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Pilih Batch Gula Aren</label>
+                            <select id="batchId" required onchange="handleBatchChange()"
+                                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-mono text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="AREN-SUMATERA-01">AREN-SUMATERA-01 (Garut - Pak Dadang)</option>
+                                <option value="AREN-JAVA-02">AREN-JAVA-02 (Banyumas - Pak Sukarna)</option>
+                                <option value="AREN-CUSTOM">Custom Batch Barcode</option>
+                            </select>
+                        </div>
+
+                        <!-- Image Simulation Upload -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Foto Fisik Cetakan Batok Kelapa (AI Vision)</label>
+                            <div class="border-2 border-dashed border-slate-800 rounded-xl p-4 text-center hover:bg-slate-950/50 transition cursor-pointer" onclick="document.getElementById('imageUpload').click()">
+                                <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                <div id="uploadPreview" class="space-y-1">
+                                    <div class="mx-auto w-9 h-9 bg-amber-950/60 rounded-full flex items-center justify-center text-amber-400 border border-amber-800/40">
+                                        <i data-lucide="camera" class="w-4 h-4"></i>
+                                    </div>
+                                    <p class="text-xs text-slate-400">Upload foto fisik permukaan gula aren</p>
+                                    <p class="text-[10px] text-slate-600">Computer Vision akan mencocokkan serat batok kelapa</p>
+                                </div>
+                                <img id="imagePreviewContainer" class="hidden max-h-36 mx-auto rounded-lg shadow-md object-cover">
+                            </div>
+                        </div>
+
+                        <!-- 5 Indikator Quick Check -->
+                        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                            <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">5 Indikator Pengetahuan Lokal:</span>
+                            <div class="grid grid-cols-2 gap-1.5 text-[11px] text-slate-300 font-medium">
+                                <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Serat Batok Kelapa</div>
+                                <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Warna Karamel Alami</div>
+                                <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Kerapuhan Fisik</div>
+                                <div class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Aroma Nira Masak</div>
+                                <div class="flex items-center gap-1.5 col-span-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Kelarutan Air Murni Tanpa Endapan</div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" id="btnSubmit" class="w-full solana-gradient text-slate-950 font-bold py-3 px-4 rounded-xl shadow-lg hover:opacity-95 transition flex items-center justify-center gap-2 text-xs uppercase tracking-wider">
+                            <i data-lucide="cpu" class="w-4 h-4"></i> Jalankan Verifikasi AI & Solana Ledger
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Processing Timeline -->
+                <div id="processingCard" class="hidden bg-slate-900 rounded-2xl p-5 border border-purple-900/50 space-y-3 shadow-xl">
+                    <div class="flex items-center space-x-3">
+                        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-purple-400"></div>
+                        <h4 class="font-bold text-xs text-purple-300">Menjalankan Verifikasi Multi-Stage...</h4>
+                    </div>
+                    <div class="space-y-1.5 font-mono text-[11px]">
+                        <p id="step1" class="text-slate-500">⚡ [1/3] Pemindaian serat batok kelapa via AI Vision...</p>
+                        <p id="step2" class="text-slate-500">⚡ [2/3] Verifikasi Digital Signature Validator...</p>
+                        <p id="step3" class="text-slate-500">⚡ [3/3] Minting Hash Ke Solana Devnet Ledger...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Certificate & Blockchain Log (7 Cols) -->
+            <div class="lg:col-span-7 space-y-6">
+
+                <!-- Initial Empty State -->
+                <div id="emptyState" class="bg-slate-900 rounded-2xl p-12 text-center border border-slate-800 shadow-xl space-y-3">
+                    <div class="w-14 h-14 bg-slate-800 text-slate-400 rounded-full flex items-center justify-center mx-auto border border-slate-700">
+                        <i data-lucide="blocks" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-200">Siap Audit Batch Produk</h3>
+                    <p class="text-xs text-slate-500 max-w-sm mx-auto">Silakan pilih batch produk gula aren di panel sebelah kiri untuk menjalankan simulasi pemindaian AI Vision dan pencatatan transaksi Solana Devnet.</p>
+                </div>
+
+                <!-- Result Certificate & Web3 Logs -->
+                <div id="resultSection" class="hidden space-y-6">
+                    
+                    <!-- Web3 Certificate Box -->
+                    <div id="certificateCard" class="bg-slate-900 border-2 border-emerald-500/80 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+                        <!-- Header Certificate -->
+                        <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-5">
+                            <div>
+                                <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded uppercase">VERIFIED ON-CHAIN</span>
+                                <h3 class="text-lg sm:text-xl font-extrabold text-white mt-1.5">Sertifikat Mutu Gula Aren Tradisional</h3>
+                                <p class="text-[11px] text-slate-400">Standardisasi Pengetahuan Lokal & Integrity Ledger</p>
+                            </div>
+                            <div id="qrcode" class="bg-white p-2 rounded-xl border border-slate-700 shadow-md"></div>
+                        </div>
+
+                        <!-- Data Grid Certificate -->
+                        <div class="grid grid-cols-2 gap-4 text-xs font-mono mb-5">
+                            <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block text-[10px]">ID BATCH / SERIAL:</span>
+                                <span id="resBatchId" class="font-bold text-amber-400 text-sm">AREN-SUMATERA-01</span>
+                            </div>
+                            <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block text-[10px]">SKOR KEMURNIAN AI VISION:</span>
+                                <span id="resAiScore" class="font-bold text-emerald-400 text-sm">98.8% (Autentik)</span>
+                            </div>
+                            <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block text-[10px]">PRODUSEN / KELOMPOK TANI:</span>
+                                <span id="resProducer" class="font-semibold text-slate-200">Kelompok Penderes Garut</span>
+                            </div>
+                            <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                                <span class="text-slate-500 block text-[10px]">TANGGAL PENCETAKAN:</span>
+                                <span id="resDate" class="font-semibold text-slate-200">1 November 2026</span>
+                            </div>
+                        </div>
+
+                        <!-- Blockchain Transaction Block -->
+                        <div class="bg-slate-950 rounded-2xl p-4 border border-purple-900/40 space-y-2 font-mono text-[11px]">
+                            <div class="flex items-center justify-between text-purple-400 font-bold border-b border-slate-800 pb-2">
+                                <span class="flex items-center gap-1.5"><i data-lucide="cpu" class="w-4 h-4"></i> Solana Devnet Smart Program</span>
+                                <span class="text-[10px] text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">CONFIRMED</span>
+                            </div>
+                            <div class="flex justify-between"><span class="text-slate-500">Block Slot:</span> <span id="resBlockNum" class="text-slate-200">#294810239</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Validator Public Key:</span> <span id="resValidator" class="text-purple-300 truncate max-w-[180px]">7xKw...p9Lq</span></div>
+                            <div>
+                                <span class="text-slate-500 block mb-0.5">Transaction Signature Hash:</span>
+                                <span id="resTxHash" class="text-[10px] text-emerald-400 break-all bg-slate-900 p-1.5 rounded block border border-slate-800">5Kj9...8xNq</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Controls -->
+                        <div class="mt-5 flex justify-end gap-2">
+                            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
+                                <i data-lucide="printer" class="w-3.5 h-3.5"></i> Cetak Laporan (PDF)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: On-Chain vs Off-Chain Data Classification (Modul 1 Requirement) -->
+        <section class="bg-slate-900 rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-xs font-mono font-bold text-purple-400 uppercase tracking-wider">Modul 1 Data Architecture</span>
+                    <h3 class="text-xl font-bold text-white mt-1">Klasifikasi Pemetaan Data (On-Chain vs Off-Chain)</h3>
+                    <p class="text-xs text-slate-400 mt-1">Penerapan efisiensi biaya gas fee & perlindungan hak privasi data pribadi (PII).</p>
+                </div>
+                <span class="bg-purple-950 text-purple-300 text-[10px] font-mono px-3 py-1 rounded-full border border-purple-800">Solana Devnet Architecture</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <!-- Off-Chain Storage Card -->
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-400 font-bold border-b border-slate-800 pb-2">
+                        <i data-lucide="database" class="w-4 h-4"></i> Data Off-Chain (Database Local / Storage)
+                    </div>
+                    <ul class="space-y-2 text-slate-300 font-mono">
+                        <li class="flex items-start gap-2">❌ <span class="text-slate-400"><strong>Nama & Kontak Penderes:</strong> Data pribadi (PII) wajib dilindungi privasinya.</span></li>
+                        <li class="flex items-start gap-2">❌ <span class="text-slate-400"><strong>File Foto Citra Fisik:</strong> Ukuran terlalu besar untuk disimpan langsung di blockchain.</span></li>
+                        <li class="flex items-start gap-2">❌ <span class="text-slate-400"><strong>Catatan Keuangan Internal:</strong> Bersifat privat untuk kelompok tani penderes.</span></li>
+                    </ul>
+                </div>
+
+                <!-- On-Chain Storage Card -->
+                <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold border-b border-slate-800 pb-2">
+                        <i data-lucide="blocks" class="w-4 h-4"></i> Data On-Chain (Blockchain Solana Ledger)
+                    </div>
+                    <ul class="space-y-2 text-slate-300 font-mono">
+                        <li class="flex items-start gap-2">✅ <span class="text-slate-300"><strong>Hash Sertifikat & Skor AI:</strong> Bukti integritas imun tidak bisa dimanipulasi.</span></li>
+                        <li class="flex items-start gap-2">✅ <span class="text-slate-300"><strong>Timestamp & Slot Block:</strong> Penanda waktu pasti pencetakan batch gula aren.</span></li>
+                        <li class="flex items-start gap-2">✅ <span class="text-slate-300"><strong>Public Key Validator:</strong> Identitas digital penjamin keaslian produk.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-900 py-6 text-center text-xs text-slate-500 font-mono">
+        <p>© 2026 Praktikum Keamanan Data & Blockchain - Modul 1 Solana Devnet</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Sample Database of Registered Batches
+        const batchDatabase = {
+            "AREN-SUMATERA-01": {
+                producer: "Kelompok Tani Aren Waspada (Garut)",
+                date: "26 Oktober 2026",
+                aiScore: "98.8% (Murni / Autentik)",
+                validator: "7xKw9aB...p9Lq (Pak Dadang)",
+                txHash: "5Kj9x8Nq2m1Lp4a7R3v6T8u0Z2y5W1e4R7t9Y0u2i4O6p8A1s3D5f7G9h0J2k4L",
+                blockNum: "#294810239"
+            },
+            "AREN-JAVA-02": {
+                producer: "Kelompok Penderes Mandiri (Banyumas)",
+                date: "28 Oktober 2026",
+                aiScore: "96.4% (Murni)",
+                validator: "3mRt1zX...k8Pw (Pak Sukarna)",
+                txHash: "8Ph2k4L6m8N0p2R4t6V8x0Z2b4D6f8H0j2L4n6P8r0T2v4X6z8B0d2F4h6J8k0M",
+                blockNum: "#294810842"
+            }
+        };
+
+        let qrCodeInstance = null;
+        let isWalletConnected = false;
+
+        // Wallet Toggle Simulator
+        function toggleWalletConnect() {
+            const btnText = document.getElementById('walletText');
+            const btnDot = document.getElementById('walletDot');
+            
+            if (!isWalletConnected) {
+                isWalletConnected = true;
+                btnText.innerText = "Phantom: 7xKw...p9Lq";
+                btnDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+            } else {
+                isWalletConnected = false;
+                btnText.innerText = "Connect Wallet (Phantom)";
+                btnDot.className = "w-2 h-2 rounded-full bg-slate-500";
+            }
+        }
+
+        // Image Preview Handler
+        function previewImage(event) {
+            const input = event.target;
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const uploadPreview = document.getElementById('uploadPreview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                    uploadPreview.classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Handle Custom Batch Input Selection
+        function handleBatchChange() {
+            const batchVal = document.getElementById('batchId').value;
+            if (batchVal === 'AREN-CUSTOM') {
+                const customId = prompt("Masukkan Custom Serial Batch ID:", "AREN-LOCAL-003");
+                if (customId) {
+                    batchDatabase[customId] = {
+                        producer: "Kelompok Penderes Lokal Terdaftar",
+                        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
+                        aiScore: "97.2% (Tersertifikasi AI)",
+                        validator: "9pLx3z...k2Mn (Ketua Kelompok)",
+                        txHash: "0x" + Array.from({length: 44}, () => Math.floor(Math.random()*16).toString(16)).join(''),
+                        blockNum: "#" + Math.floor(290000000 + Math.random() * 1000000)
+                    };
+                    const select = document.getElementById('batchId');
+                    const opt = document.createElement('option');
+                    opt.value = customId;
+                    opt.innerHTML = `${customId} (Custom Batch)`;
+                    select.appendChild(opt);
+                    select.value = customId;
+                }
+            }
+        }
+
+        // Run Verification Workflow Simulation
+        function runVerification(e) {
+            e.preventDefault();
+            
+            const batchInput = document.getElementById('batchId').value;
+            const processingCard = document.getElementById('processingCard');
+            const resultSection = document.getElementById('resultSection');
+            const emptyState = document.getElementById('emptyState');
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            // Show Loading UI
+            btnSubmit.disabled = true;
+            emptyState.classList.add('hidden');
+            resultSection.classList.add('hidden');
+            processingCard.classList.remove('hidden');
+
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+
+            step1.className = "text-purple-400 font-semibold";
+            step2.className = "text-slate-500";
+            step3.className = "text-slate-500";
+
+            // Multi-Stage Processing Simulation
+            setTimeout(() => {
+                step1.className = "text-emerald-400 font-semibold";
+                step2.className = "text-purple-400 font-semibold";
+            }, 700);
+
+            setTimeout(() => {
+                step2.className = "text-emerald-400 font-semibold";
+                step3.className = "text-purple-400 font-semibold";
+            }, 1400);
+
+            setTimeout(() => {
+                step3.className = "text-emerald-400 font-semibold";
+                
+                const data = batchDatabase[batchInput] || {
+                    producer: "Kelompok Penderes Terdaftar",
+                    date: "1 November 2026",
+                    aiScore: "97.8% (Murni)",
+                    validator: "7xKw9aB...p9Lq",
+                    txHash: "5Kj9x8Nq2m1Lp4a7R3v6T8u0Z2y5W1e4R7t9Y0u2i4O6p8A1s3D5f7G9h0J2k4L",
+                    blockNum: "#294810999"
+                };
+
+                // Populate Certificate Info
+                document.getElementById('resBatchId').innerText = batchInput;
+                document.getElementById('resProducer').innerText = data.producer;
+                document.getElementById('resDate').innerText = data.date;
+                document.getElementById('resAiScore').innerText = data.aiScore;
+                document.getElementById('resValidator').innerText = data.validator;
+                document.getElementById('resTxHash').innerText = data.txHash;
+                document.getElementById('resBlockNum').innerText = data.blockNum;
+
+                // Render Dynamic QR Code
+                const qrContainer = document.getElementById('qrcode');
+                qrContainer.innerHTML = "";
+                qrCodeInstance = new QRCode(qrContainer, {
+                    text: `https://fitri-lift.github.io/outdoor-rent-web3/verify?batch=${batchInput}`,
+                    width: 76,
+                    height: 76,
+                    colorDark: "#020617",
+                    colorLight: "#ffffff"
+                });
+
+                // Show Result Card
+                processingCard.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                btnSubmit.disabled = false;
+            }, 2100);
+        }
+    </script>
+</body>
+</html>
